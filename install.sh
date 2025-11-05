@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Running install.sh: downloading N_m3u8DL-RE and ffmpeg if needed..."
+echo "🚀 Running install.sh: downloading N_m3u8DL-RE and ffmpeg if needed..."
 
 GITHUB_REPO="nilaoda/N_m3u8DL-RE"
 
 API_JSON=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}/releases/latest") || true
-ASSET_URL=$(echo "$API_JSON" | grep -Eo "https[^\"]*linux[^\"]*zip" | head -n1 || true)
+ASSET_URL=$(echo "$API_JSON" | grep -Eo "https[^\"]*linux[^\"]*zip" | head -n1) || true
 
 if [ -z "${ASSET_URL:-}" ]; then
-  echo "⚠️ لم أجد ملف N_m3u8DL-RE تلقائياً، يمكنك رفعه يدوياً."
+  echo "⚠️ لم أجد ملف N_m3u8DL-RE تلقائياً، سيتم استخدام النسخة اليدوية إن وجدت."
 else
   echo "✅ Found N asset: $ASSET_URL"
   curl -L "$ASSET_URL" -o N_m3u8DL-RE.zip || true
@@ -17,9 +17,16 @@ else
   EXE=$(find n_tmp -type f -name "N_m3u8DL-RE" | head -n1 || true)
   if [ -n "${EXE:-}" ]; then
     mv "$EXE" ./N_m3u8DL-RE
-    chmod +x ./N_m3u8DL-RE
-    echo "✅ N_m3u8DL-RE installed."
+    echo "✅ N_m3u8DL-RE downloaded successfully."
   fi
+fi
+
+# ضمان وجود صلاحيات تشغيل حتى للنسخة المرفوعة يدوياً
+if [ -f "./N_m3u8DL-RE" ]; then
+  chmod +x ./N_m3u8DL-RE || true
+  echo "🔐 Permissions fixed for N_m3u8DL-RE"
+else
+  echo "⚠️ لم يتم العثور على N_m3u8DL-RE حتى الآن."
 fi
 
 # Install ffmpeg if not already present
