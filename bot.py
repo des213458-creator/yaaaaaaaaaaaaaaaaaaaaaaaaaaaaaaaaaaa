@@ -78,9 +78,7 @@ async def handle_m3u8_url(message: types.Message, url: str):
         cmd = [str(N_BIN), url, '--save-name', out_name.rsplit('.',1)[0], '--save-dir', str(tmpdir), '--no-log']
         rc, out, err = await run_subprocess(cmd, timeout=1800)  # 30 minutes timeout
         if rc != 0:
-            await status.edit_text(f"N_m3u8DL-RE فشل أثناء التنزيل.")
-موجز الخطأ:
-{err.decode(errors='ignore')[:1000]}")
+            await status.edit_text(f"فشل N_m3u8DL-RE أو حدث خطأ أثناء التنزيل:\n{err.decode(errors='ignore')[:1000]}")
             return
 
         # find produced file
