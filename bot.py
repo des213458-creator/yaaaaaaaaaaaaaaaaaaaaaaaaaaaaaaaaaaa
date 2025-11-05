@@ -100,8 +100,7 @@ async def handle_m3u8_url(message: types.Message, url: str):
                 await bot.send_document(chat_id, (mp.name, f))
             await status.delete()
         except Exception as e:
-            await status.edit_text(f"تم إنشاء الملف لكن حدث خطأ عند رفعه لتليجرام: {e}
-قد تحتاج رفعه لمخدم خارجي إذا كان كبيرًا جدًا.")
+            await status.edit_text(f"تم إنشاء الملف لكن حدث خطأ عند رفعه لتليجرام: {e}\nإذا كان الملف كبيرًا جدًا، فكّر برفعه إلى تخزين خارجي.")
 
     finally:
         # cleanup tmpdir
